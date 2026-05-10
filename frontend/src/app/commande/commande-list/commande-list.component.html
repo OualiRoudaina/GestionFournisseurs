@@ -1,0 +1,104 @@
+<div class="container-fluid fade-in">
+  <!-- Header Section -->
+  <div class="page-header mb-4">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+      <div>
+        <h1 class="text-gradient">
+          <i class="fas fa-shopping-bag me-2"></i>Gestion des Commandes
+        </h1>
+        <p class="text-muted mb-0">Suivez et gérez toutes vos commandes d'achat</p>
+      </div>
+      <button class="btn btn-primary" (click)="onNewCommande()">
+        <i class="fas fa-plus-circle"></i>
+        <span>Nouvelle Commande</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Commandes List -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">
+              <i class="fas fa-list me-2"></i>Liste des Commandes
+            </h5>
+            <span class="badge bg-light text-dark">{{ commandes.length }} commande(s)</span>
+          </div>
+        </div>
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table table-hover mb-0">
+              <thead>
+                <tr>
+                  <th>Fournisseur</th>
+                  <th>Date</th>
+                  <th>Statut</th>
+                  <th>Montant</th>
+                  <th class="text-end">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let commande of commandes" class="table-row-hover">
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <div class="avatar-circle me-3">
+                        <i class="fas fa-building"></i>
+                      </div>
+                      <div>
+                        <div class="fw-semibold">{{ commande.fournisseur?.nom || 'N/A' }}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <i class="fas fa-calendar-alt me-2 text-muted"></i>
+                      <span>{{ formatDate(commande.date) }}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <span [class]="getStatusBadgeClass(commande.statut)" class="badge-lg">
+                      {{ commande.statut }}
+                    </span>
+                  </td>
+                  <td>
+                    <div class="fw-semibold text-primary">{{ formatMontant(commande.montant || 0) }}</div>
+                  </td>
+                  <td>
+                    <div class="d-flex justify-content-end gap-2">
+                      <button class="btn btn-sm btn-outline-primary" 
+                              (click)="onEdit(commande)" 
+                              title="Modifier">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button class="btn btn-sm btn-outline-danger" 
+                              (click)="onDelete(commande)" 
+                              title="Supprimer">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Empty State -->
+          <div *ngIf="commandes.length === 0" class="empty-state">
+            <div class="empty-state-content">
+              <div class="empty-state-icon">
+                <i class="fas fa-shopping-bag"></i>
+              </div>
+              <h4 class="empty-state-title">Aucune commande trouvée</h4>
+              <p class="empty-state-text">Créez votre première commande pour commencer</p>
+              <button class="btn btn-primary mt-3" (click)="onNewCommande()">
+                <i class="fas fa-plus-circle me-2"></i>Nouvelle commande
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

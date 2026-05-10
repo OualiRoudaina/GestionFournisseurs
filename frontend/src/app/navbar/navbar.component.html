@@ -1,0 +1,135 @@
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <div class="container-fluid px-4">
+    <a class="navbar-brand" routerLink="/dashboard">
+      <div class="brand-wrapper">
+        <i class="fas fa-shopping-cart brand-icon"></i>
+        <span class="brand-text">Gestion Achats</span>
+      </div>
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/dashboard" routerLinkActive="active"
+             [routerLinkActiveOptions]="{exact: true}">
+            <i class="fas fa-tachometer-alt"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="fournisseursDropdown" role="button"
+             data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-building"></i>
+            <span>Fournisseurs</span>
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="fournisseursDropdown">
+            <li>
+              <a class="dropdown-item" (click)="navigateTo('/fournisseurs', $event)">
+                <i class="fas fa-list"></i>
+                <span>Liste des fournisseurs</span>
+              </a>
+            </li>
+            <li><hr class="dropdown-divider"></li>
+            <li>
+              <a class="dropdown-item" (click)="navigateTo('/fournisseurs/new', $event)">
+                <i class="fas fa-plus-circle"></i>
+                <span>Nouveau fournisseur</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="commandesDropdown" role="button"
+             data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-shopping-bag"></i>
+            <span>Commandes</span>
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="commandesDropdown">
+            <li>
+              <a class="dropdown-item" (click)="navigateTo('/commandes', $event)">
+                <i class="fas fa-list"></i>
+                <span>Liste des commandes</span>
+              </a>
+            </li>
+            <li><hr class="dropdown-divider"></li>
+            <li>
+              <a class="dropdown-item" (click)="navigateTo('/commandes/new', $event)">
+                <i class="fas fa-plus-circle"></i>
+                <span>Nouvelle commande</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="lignesDropdown" role="button"
+             data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-list-alt"></i>
+            <span>Lignes Commande</span>
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="lignesDropdown">
+            <li>
+              <a class="dropdown-item" (click)="navigateTo('/lignes-commande', $event)">
+                <i class="fas fa-list"></i>
+                <span>Liste des lignes</span>
+              </a>
+            </li>
+            <li><hr class="dropdown-divider"></li>
+            <li>
+              <a class="dropdown-item" (click)="navigateTo('/lignes-commande/new', $event)">
+                <i class="fas fa-plus-circle"></i>
+                <span>Ajouter une ligne</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="historiqueDropdown" role="button"
+             data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-history"></i>
+            <span>Historique</span>
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="historiqueDropdown">
+            <li>
+              <a class="dropdown-item" (click)="navigateTo('/historique', $event)">
+                <i class="fas fa-list"></i>
+                <span>Voir l'historique</span>
+              </a>
+            </li>
+            <li><hr class="dropdown-divider"></li>
+            <li>
+              <a class="dropdown-item" (click)="navigateTo('/historique/new', $event)">
+                <i class="fas fa-plus-circle"></i>
+                <span>Ajouter un achat</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" (click)="navigateTo('/comparaison-offres', $event)" [class.active]="isActive('/comparaison-offres')">
+            <i class="fas fa-balance-scale"></i>
+            <span>Comparaison</span>
+          </a>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="http://localhost:8085/swagger-ui.html" target="_blank">
+            <i class="fas fa-book"></i>
+            <span>API Docs</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

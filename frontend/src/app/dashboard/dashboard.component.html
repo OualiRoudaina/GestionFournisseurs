@@ -1,0 +1,233 @@
+<div class="dashboard-container fade-in">
+  <div class="page-header">
+    <div class="d-flex align-items-center justify-content-between">
+      <div>
+        <h1 class="text-gradient">
+          <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+        </h1>
+        <p class="text-muted mb-0">Vue d'ensemble de votre système de gestion des achats</p>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-primary" routerLink="/commandes/new">
+          <i class="fas fa-plus"></i>
+          <span>Nouvelle Commande</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Statistiques principales -->
+  <div class="row g-4 mb-4">
+    <div class="col-xl-3 col-md-6">
+      <div class="card stats-card stats-card-primary h-100">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start">
+            <div class="flex-grow-1">
+              <div class="stats-label">Total Fournisseurs</div>
+              <div class="stats-number">{{ stats.totalFournisseurs }}</div>
+            </div>
+            <div class="stats-icon">
+              <i class="fas fa-building"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+      <div class="card stats-card stats-card-success h-100">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start">
+            <div class="flex-grow-1">
+              <div class="stats-label">Total Commandes</div>
+              <div class="stats-number">{{ stats.totalCommandes }}</div>
+            </div>
+            <div class="stats-icon">
+              <i class="fas fa-shopping-bag"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+      <div class="card stats-card stats-card-info h-100">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start">
+            <div class="flex-grow-1">
+              <div class="stats-label">Montant Total</div>
+              <div class="stats-number">{{ formatMontant(stats.montantTotal) }}</div>
+            </div>
+            <div class="stats-icon">
+              <i class="fas fa-euro-sign"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+      <div class="card stats-card stats-card-warning h-100">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start">
+            <div class="flex-grow-1">
+              <div class="stats-label">Délai Moyen</div>
+              <div class="stats-number">{{ stats.moyenneDelaiLivraison }}j</div>
+            </div>
+            <div class="stats-icon">
+              <i class="fas fa-clock"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- Graphiques des statuts -->
+    <div class="col-lg-6 mb-4">
+      <div class="card shadow">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">
+            <i class="fas fa-chart-pie me-2"></i>Statuts des Commandes
+          </h6>
+        </div>
+        <div class="card-body">
+          <div class="chart-container">
+            <div class="d-flex justify-content-around align-items-center" style="height: 200px;">
+              <div class="text-center">
+                <div class="h4 text-success">{{ stats.commandesLivre }}</div>
+                <small class="text-muted">Livrées</small>
+              </div>
+              <div class="text-center">
+                <div class="h4 text-warning">{{ stats.commandesEnAttente }}</div>
+                <small class="text-muted">En attente</small>
+              </div>
+              <div class="text-center">
+                <div class="h4 text-primary">{{ stats.totalCommandes - stats.commandesLivre - stats.commandesEnAttente }}</div>
+                <small class="text-muted">Confirmées</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Meilleurs fournisseurs -->
+    <div class="col-lg-6 mb-4">
+      <div class="card shadow">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">
+            <i class="fas fa-star me-2"></i>Top Fournisseurs
+          </h6>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-borderless">
+              <tbody>
+                <tr *ngFor="let fournisseur of topFournisseurs; let i = index">
+                  <td>
+                    <span class="badge bg-primary me-2">#{{ i + 1 }}</span>
+                    {{ fournisseur.nom }}
+                  </td>
+                  <td class="text-end">
+                    <span class="badge bg-success">{{ fournisseur.note }}/10</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dernières commandes -->
+  <div class="row">
+    <div class="col-12 mb-4">
+      <div class="card shadow">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">
+            <i class="fas fa-clock me-2"></i>Dernières Commandes
+          </h6>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead class="table-light">
+                <tr>
+                  <th>Fournisseur</th>
+                  <th>Date</th>
+                  <th>Statut</th>
+                  <th>Montant</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let commande of recentCommandes">
+                  <td>{{ commande.fournisseur?.nom || 'N/A' }}</td>
+                  <td>{{ formatDate(commande.date) }}</td>
+                  <td>
+                    <span [class]="getStatusBadgeClass(commande.statut)">
+                      {{ commande.statut }}
+                    </span>
+                  </td>
+                  <td>{{ formatMontant(commande.montant || 0) }}</td>
+                  <td>
+                    <button class="btn btn-sm btn-outline-primary me-1">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-secondary">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Actions rapides -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">
+            <i class="fas fa-bolt me-2"></i>Actions Rapides
+          </h6>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-3 mb-3">
+              <button class="btn btn-primary w-100" routerLink="/fournisseurs/new">
+                <i class="fas fa-plus me-2"></i>
+                Nouveau Fournisseur
+              </button>
+            </div>
+            <div class="col-md-3 mb-3">
+              <button class="btn btn-success w-100" routerLink="/commandes/new">
+                <i class="fas fa-shopping-cart me-2"></i>
+                Nouvelle Commande
+              </button>
+            </div>
+            <div class="col-md-3 mb-3">
+              <button class="btn btn-info w-100" routerLink="/comparaison-offres">
+                <i class="fas fa-balance-scale me-2"></i>
+                Comparer Offres
+              </button>
+            </div>
+            <div class="col-md-3 mb-3">
+              <button class="btn btn-warning w-100" routerLink="/historique">
+                <i class="fas fa-history me-2"></i>
+                Voir Historique
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

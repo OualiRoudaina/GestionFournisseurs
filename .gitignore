@@ -1,0 +1,57 @@
+# Backend - Maven (dossier: Backend/)
+Backend/target/
+Backend/.mvn/wrapper/maven-wrapper.jar
+Backend/data/
+Backend/*.mv.db
+Backend/*.trace.db
+Backend/*.lock.db
+
+# Backend - Compiled / artefacts de build locale
+Backend/**/*.class
+
+# Backend - IDE (local au module)
+Backend/.idea/
+Backend/*.iml
+Backend/.vscode/
+Backend/.settings/
+Backend/.project
+Backend/.classpath
+
+# Frontend - Node / Angular
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+frontend/.sass-cache/
+frontend/coverage/
+frontend/.vscode/
+
+# Frontend - Build artifacts
+frontend/**/*.js.map
+frontend/**/*.css.map
+
+# Logs (partout dans le repo)
+*.log
+*.log.*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# IDE projet (racine)
+.idea/
+*.iml
+.vscode/
+
+# Divers
+*.orig

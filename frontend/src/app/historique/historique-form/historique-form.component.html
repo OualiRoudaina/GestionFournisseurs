@@ -1,0 +1,187 @@
+<div class="container-fluid fade-in">
+  <div class="row justify-content-center">
+    <div class="col-md-10 col-lg-8">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="mb-0">
+            <i class="fas fa-history me-2"></i>
+            {{ isEditMode ? 'Modifier l\'Historique' : 'Ajouter un Achat à l\'Historique' }}
+          </h4>
+        </div>
+        <div class="card-body">
+          <!-- Message d'erreur -->
+          <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            {{ errorMessage }}
+          </div>
+
+          <!-- Message de succès -->
+          <div *ngIf="successMessage" class="alert alert-success" role="alert">
+            <i class="fas fa-check-circle me-2"></i>
+            {{ successMessage }}
+          </div>
+
+          <form [formGroup]="historiqueForm" (ngSubmit)="onSubmit()">
+            <!-- Fournisseur -->
+            <div class="mb-4">
+              <label for="fournisseurId" class="form-label">
+                <i class="fas fa-building me-1"></i>Fournisseur *
+              </label>
+              <select class="form-select"
+                      id="fournisseurId"
+                      formControlName="fournisseurId"
+                      [class.is-invalid]="isFieldInvalid('fournisseurId')">
+                <option value="">-- Sélectionner un fournisseur --</option>
+                <option *ngFor="let fournisseur of fournisseurs" [value]="fournisseur.id">
+                  {{ fournisseur.nom }} 
+                  <span *ngIf="fournisseur.note">(Note: {{ fournisseur.note.toFixed(1) }}/10)</span>
+                </option>
+              </select>
+              <div class="invalid-feedback">
+                {{ getFieldErrorMessage('fournisseurId') }}
+              </div>
+              <div class="form-text">
+                <i class="fas fa-info-circle me-1"></i>
+                Sélectionnez le fournisseur concerné par cet achat
+              </div>
+            </div>
+
+            <!-- Produit -->
+            <div class="mb-4">
+              <label for="produit" class="form-label">
+                <i class="fas fa-box me-1"></i>Produit *
+              </label>
+              <input type="text"
+                     class="form-control"
+                     id="produit"
+                     formControlName="produit"
+                     [class.is-invalid]="isFieldInvalid('produit')"
+                     placeholder="Ex: Ordinateur portable, Clavier mécanique...">
+              <div class="invalid-feedback">
+                {{ getFieldErrorMessage('produit') }}
+              </div>
+              <div class="form-text">
+                <i class="fas fa-info-circle me-1"></i>
+                Nom du produit acheté
+              </div>
+            </div>
+
+            <!-- Quantité -->
+            <div class="mb-4">
+              <label for="quantite" class="form-label">
+                <i class="fas fa-sort-numeric-up me-1"></i>Quantité *
+              </label>
+              <input type="number"
+                     class="form-control"
+                     id="quantite"
+                     formControlName="quantite"
+                     [class.is-invalid]="isFieldInvalid('quantite')"
+                     min="1"
+                     step="1"
+                     placeholder="1">
+              <div class="invalid-feedback">
+                {{ getFieldErrorMessage('quantite') }}
+              </div>
+              <div class="form-text">
+                <i class="fas fa-info-circle me-1"></i>
+                Quantité de produits achetés
+              </div>
+            </div>
+
+            <!-- Délai de livraison -->
+            <div class="mb-4">
+              <label for="delaiLivraison" class="form-label">
+                <i class="fas fa-clock me-1"></i>Délai de Livraison (jours) *
+              </label>
+              <input type="number"
+                     class="form-control"
+                     id="delaiLivraison"
+                     formControlName="delaiLivraison"
+                     [class.is-invalid]="isFieldInvalid('delaiLivraison')"
+                     min="1"
+                     step="1"
+                     placeholder="7">
+              <div class="invalid-feedback">
+                {{ getFieldErrorMessage('delaiLivraison') }}
+              </div>
+              <div class="form-text">
+                <i class="fas fa-info-circle me-1"></i>
+                Nombre de jours entre la commande et la livraison
+              </div>
+            </div>
+
+            <!-- Date d'achat -->
+            <div class="mb-4">
+              <label for="dateAchat" class="form-label">
+                <i class="fas fa-calendar-alt me-1"></i>Date d'Achat *
+              </label>
+              <input type="date"
+                     class="form-control"
+                     id="dateAchat"
+                     formControlName="dateAchat"
+                     [class.is-invalid]="isFieldInvalid('dateAchat')">
+              <div class="invalid-feedback">
+                {{ getFieldErrorMessage('dateAchat') }}
+              </div>
+              <div class="form-text">
+                <i class="fas fa-info-circle me-1"></i>
+                Date à laquelle l'achat a été effectué
+              </div>
+            </div>
+
+            <!-- Informations du fournisseur sélectionné -->
+            <div *ngIf="getSelectedFournisseur()" class="mb-4">
+              <div class="card bg-light border-0">
+                <div class="card-body">
+                  <h6 class="card-title mb-3">
+                    <i class="fas fa-info-circle me-2"></i>Informations du Fournisseur
+                  </h6>
+                  <div class="row">
+                    <div class="col-md-6 mb-2">
+                      <strong>Nom:</strong> {{ getSelectedFournisseur()?.nom }}
+                    </div>
+                    <div class="col-md-6 mb-2">
+                      <strong>Contact:</strong> 
+                      <a [href]="'mailto:' + getSelectedFournisseur()?.contact" class="text-decoration-none">
+                        {{ getSelectedFournisseur()?.contact }}
+                      </a>
+                    </div>
+                    <div class="col-md-6 mb-2" *ngIf="getSelectedFournisseur()?.note">
+                      <strong>Note:</strong> 
+                      <span class="badge bg-success">
+                        {{ getSelectedFournisseur()?.note?.toFixed(1) }}/10
+                      </span>
+                    </div>
+                    <div class="col-md-6 mb-2" *ngIf="getSelectedFournisseur()?.qualiteService">
+                      <strong>Qualité Service:</strong> 
+                      <span class="badge bg-info">
+                        {{ getSelectedFournisseur()?.qualiteService }}/10
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Boutons d'action -->
+            <div class="d-flex justify-content-end gap-2 mt-4">
+              <button type="button"
+                      class="btn btn-secondary"
+                      (click)="onCancel()"
+                      [disabled]="loading">
+                <i class="fas fa-times me-1"></i>Annuler
+              </button>
+              <button type="submit"
+                      class="btn btn-primary"
+                      [disabled]="historiqueForm.invalid || loading">
+                <i class="fas fa-spinner fa-spin me-1" *ngIf="loading"></i>
+                <i class="fas fa-save me-1" *ngIf="!loading"></i>
+                {{ isEditMode ? 'Modifier' : 'Ajouter' }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
