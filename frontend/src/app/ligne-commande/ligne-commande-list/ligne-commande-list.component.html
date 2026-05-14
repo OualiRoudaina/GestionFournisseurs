@@ -1,0 +1,113 @@
+<div class="container-fluid fade-in">
+  <div class="page-header mb-4">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+      <div>
+        <h1 class="text-gradient">
+          <i class="fas fa-list-alt me-2"></i>Lignes de Commande
+        </h1>
+        <p class="text-muted mb-0">Consultez les produits, quantités et prix unitaires des commandes</p>
+      </div>
+      <button class="btn btn-primary" (click)="onNewLigne()">
+        <i class="fas fa-plus-circle"></i>
+        <span>Ajouter une ligne</span>
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+    <i class="fas fa-exclamation-triangle me-2"></i>{{ errorMessage }}
+  </div>
+
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Chargement...</span>
+    </div>
+    <p class="mt-3 text-muted">Chargement des lignes de commande...</p>
+  </div>
+
+  <div class="row" *ngIf="!loading">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">
+              <i class="fas fa-list me-2"></i>Liste des Lignes Commande
+            </h5>
+            <span class="badge bg-light text-dark">{{ lignesCommande.length }} ligne(s)</span>
+          </div>
+        </div>
+
+        <div class="card-body p-0">
+          <div class="table-responsive" *ngIf="lignesCommande.length > 0">
+            <table class="table table-hover mb-0">
+              <thead>
+                <tr>
+                  <th>Produit</th>
+                  <th>Commande</th>
+                  <th>Quantité</th>
+                  <th>Prix unitaire</th>
+                  <th>Total</th>
+                  <th class="text-end">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let ligne of lignesCommande" class="table-row-hover">
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <div class="avatar-circle me-3">
+                        <i class="fas fa-box"></i>
+                      </div>
+                      <div>
+                        <div class="fw-semibold">{{ ligne.produit }}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <span *ngIf="ligne.commande?.id; else noCommande">
+                      Commande #{{ ligne.commande?.id }}
+                    </span>
+                    <ng-template #noCommande>
+                      <span class="text-muted">—</span>
+                    </ng-template>
+                  </td>
+                  <td>{{ ligne.quantite }}</td>
+                  <td class="fw-semibold text-primary">{{ formatCurrency(ligne.prixUnitaire) }}</td>
+                  <td class="fw-semibold text-success">{{ formatCurrency(getTotal(ligne)) }}</td>
+                  <td>
+                    <div class="d-flex justify-content-end gap-2">
+                      <button class="btn btn-sm btn-outline-primary"
+                              (click)="onEdit(ligne)"
+                              [disabled]="!ligne.id"
+                              title="Modifier">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button class="btn btn-sm btn-outline-danger"
+                              (click)="onDelete(ligne)"
+                              [disabled]="!ligne.id"
+                              title="Supprimer">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div *ngIf="lignesCommande.length === 0" class="empty-state">
+            <div class="empty-state-content">
+              <div class="empty-state-icon">
+                <i class="fas fa-list-alt"></i>
+              </div>
+              <h4 class="empty-state-title">Aucune ligne de commande trouvée</h4>
+              <p class="empty-state-text">Ajoutez une ligne à une commande pour comparer les prix par produit</p>
+              <button class="btn btn-primary mt-3" (click)="onNewLigne()">
+                <i class="fas fa-plus-circle me-2"></i>Ajouter une ligne
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

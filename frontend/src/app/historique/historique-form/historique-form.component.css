@@ -18,22 +18,23 @@
 }
 
 .card {
-  border: none;
-  border-radius: 1rem;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  box-shadow: var(--shadow-sm);
   overflow: hidden;
-  transition: all 0.3s ease;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .card:hover {
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.06);
-  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-border-strong);
 }
 
 .card-header {
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-  color: white;
+  background: var(--nav-bg);
+  color: #f8fafc;
   border: none;
+  border-bottom: 3px solid var(--accent);
   padding: 2rem;
   border-radius: 0 !important;
 }
@@ -66,7 +67,7 @@
 }
 
 .form-label i {
-  color: #6366f1;
+  color: var(--accent);
   width: 20px;
 }
 
@@ -82,8 +83,8 @@
 
 .form-control:focus,
 .form-select:focus {
-  border-color: #6366f1;
-  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-ring);
   outline: none;
   background: #ffffff;
 }
@@ -144,9 +145,9 @@
    ============================================ */
 
 .card.bg-light {
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;
-  border-radius: 0.75rem;
-  border: 1px solid #e2e8f0;
+  background: #f8fafc !important;
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
 }
 
 .card.bg-light .card-body {
@@ -166,12 +167,12 @@
 }
 
 .card.bg-light a {
-  color: #6366f1;
+  color: var(--accent);
   transition: color 0.2s ease;
 }
 
 .card.bg-light a:hover {
-  color: #4f46e5;
+  color: var(--accent-hover);
 }
 
 /* ============================================
@@ -179,24 +180,23 @@
    ============================================ */
 
 .btn {
-  border-radius: 0.75rem;
-  padding: 0.875rem 2rem;
+  border-radius: 10px;
+  padding: 0.75rem 1.5rem;
   font-weight: 600;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
   border: none;
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-xs);
 }
 
 .btn:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-sm);
 }
 
 .btn:active:not(:disabled) {
-  transform: translateY(0);
+  box-shadow: var(--shadow-xs);
 }
 
 .btn:disabled {
@@ -205,12 +205,12 @@
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  background: var(--accent);
   color: white;
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+  background: var(--accent-hover);
 }
 
 .btn-secondary {

@@ -11,6 +11,12 @@ import java.util.List;
 
 @Repository
 public interface HistoriqueAchatsRepository extends JpaRepository<HistoriqueAchats, Long> {
+
+    @Query("SELECT h FROM HistoriqueAchats h LEFT JOIN FETCH h.fournisseur")
+    List<HistoriqueAchats> findAllWithFournisseur();
+
+    @Query("SELECT h FROM HistoriqueAchats h LEFT JOIN FETCH h.fournisseur WHERE h.id = :id")
+    java.util.Optional<HistoriqueAchats> findByIdWithFournisseur(@Param("id") Long id);
     
     List<HistoriqueAchats> findByFournisseurId(Long fournisseurId);
     
@@ -23,6 +29,9 @@ public interface HistoriqueAchatsRepository extends JpaRepository<HistoriqueAcha
     
     @Query("SELECT h FROM HistoriqueAchats h WHERE h.produit = :produit ORDER BY h.delaiLivraison ASC")
     List<HistoriqueAchats> findFastestDeliveryForProduct(@Param("produit") String produit);
+
+    @Query("SELECT DISTINCT h.produit FROM HistoriqueAchats h")
+    List<String> findAllProducts();
     
     @Query("SELECT COUNT(h) FROM HistoriqueAchats h WHERE h.fournisseur.id = :fournisseurId")
     Long getTotalAchatsByFournisseur(@Param("fournisseurId") Long fournisseurId);

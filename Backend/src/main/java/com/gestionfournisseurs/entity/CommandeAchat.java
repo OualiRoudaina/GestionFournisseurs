@@ -1,6 +1,6 @@
 package com.gestionfournisseurs.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -10,6 +10,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "commandes_achat")
+@JsonIgnoreProperties({"lignesCommande"})
 public class CommandeAchat {
     
     @Id
@@ -18,7 +19,6 @@ public class CommandeAchat {
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fournisseur_id", nullable = false)
-    @JsonIgnore
     private Fournisseur fournisseur;
     
     @NotNull(message = "La date de commande est obligatoire")
@@ -35,7 +35,6 @@ public class CommandeAchat {
     private Double montant;
     
     @OneToMany(mappedBy = "commande", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore
     private List<LigneCommandeAchat> lignesCommande;
 
     public CommandeAchat() {}

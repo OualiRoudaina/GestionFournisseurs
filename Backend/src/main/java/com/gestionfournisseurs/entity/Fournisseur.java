@@ -1,6 +1,6 @@
 package com.gestionfournisseurs.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -9,6 +9,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "fournisseurs")
+@JsonIgnoreProperties({"commandes", "historiqueAchats", "hibernateLazyInitializer", "handler"})
 public class Fournisseur {
     
     @Id
@@ -30,11 +31,9 @@ public class Fournisseur {
     private Double note;
     
     @OneToMany(mappedBy = "fournisseur", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore
     private List<CommandeAchat> commandes;
     
     @OneToMany(mappedBy = "fournisseur", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore
     private List<HistoriqueAchats> historiqueAchats;
 
     public Fournisseur() {}

@@ -22,109 +22,59 @@
           </a>
         </li>
 
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="fournisseursDropdown" role="button"
-             data-bs-toggle="dropdown" aria-expanded="false">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/fournisseurs" routerLinkActive="active"
+             [routerLinkActiveOptions]="{exact: false}">
             <i class="fas fa-building"></i>
             <span>Fournisseurs</span>
           </a>
-          <ul class="dropdown-menu" aria-labelledby="fournisseursDropdown">
-            <li>
-              <a class="dropdown-item" (click)="navigateTo('/fournisseurs', $event)">
-                <i class="fas fa-list"></i>
-                <span>Liste des fournisseurs</span>
-              </a>
-            </li>
-            <li><hr class="dropdown-divider"></li>
-            <li>
-              <a class="dropdown-item" (click)="navigateTo('/fournisseurs/new', $event)">
-                <i class="fas fa-plus-circle"></i>
-                <span>Nouveau fournisseur</span>
-              </a>
-            </li>
-          </ul>
-        </li>
-
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="commandesDropdown" role="button"
-             data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="fas fa-shopping-bag"></i>
-            <span>Commandes</span>
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="commandesDropdown">
-            <li>
-              <a class="dropdown-item" (click)="navigateTo('/commandes', $event)">
-                <i class="fas fa-list"></i>
-                <span>Liste des commandes</span>
-              </a>
-            </li>
-            <li><hr class="dropdown-divider"></li>
-            <li>
-              <a class="dropdown-item" (click)="navigateTo('/commandes/new', $event)">
-                <i class="fas fa-plus-circle"></i>
-                <span>Nouvelle commande</span>
-              </a>
-            </li>
-          </ul>
-        </li>
-
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="lignesDropdown" role="button"
-             data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="fas fa-list-alt"></i>
-            <span>Lignes Commande</span>
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="lignesDropdown">
-            <li>
-              <a class="dropdown-item" (click)="navigateTo('/lignes-commande', $event)">
-                <i class="fas fa-list"></i>
-                <span>Liste des lignes</span>
-              </a>
-            </li>
-            <li><hr class="dropdown-divider"></li>
-            <li>
-              <a class="dropdown-item" (click)="navigateTo('/lignes-commande/new', $event)">
-                <i class="fas fa-plus-circle"></i>
-                <span>Ajouter une ligne</span>
-              </a>
-            </li>
-          </ul>
-        </li>
-
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="historiqueDropdown" role="button"
-             data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="fas fa-history"></i>
-            <span>Historique</span>
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="historiqueDropdown">
-            <li>
-              <a class="dropdown-item" (click)="navigateTo('/historique', $event)">
-                <i class="fas fa-list"></i>
-                <span>Voir l'historique</span>
-              </a>
-            </li>
-            <li><hr class="dropdown-divider"></li>
-            <li>
-              <a class="dropdown-item" (click)="navigateTo('/historique/new', $event)">
-                <i class="fas fa-plus-circle"></i>
-                <span>Ajouter un achat</span>
-              </a>
-            </li>
-          </ul>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" (click)="navigateTo('/comparaison-offres', $event)" [class.active]="isActive('/comparaison-offres')">
+          <a class="nav-link" routerLink="/commandes" routerLinkActive="active"
+             [routerLinkActiveOptions]="{exact: false}">
+            <i class="fas fa-shopping-bag"></i>
+            <span>Commandes</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/lignes-commande" routerLinkActive="active"
+             [routerLinkActiveOptions]="{exact: false}">
+            <i class="fas fa-list-alt"></i>
+            <span>Lignes commande</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/historique" routerLinkActive="active"
+             [routerLinkActiveOptions]="{exact: false}">
+            <i class="fas fa-history"></i>
+            <span>Historique</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/comparaison-offres" routerLinkActive="active">
             <i class="fas fa-balance-scale"></i>
             <span>Comparaison</span>
           </a>
         </li>
       </ul>
 
-      <ul class="navbar-nav ms-auto">
+      <ul class="navbar-nav ms-auto align-items-lg-center">
+        <li class="nav-item d-none d-lg-block" *ngIf="displayName">
+          <span class="navbar-text text-light opacity-90 me-3 small">
+            <i class="fas fa-user-circle me-1"></i>{{ displayName }}
+          </span>
+        </li>
         <li class="nav-item">
-          <a class="nav-link" href="http://localhost:8085/swagger-ui.html" target="_blank">
+          <button type="button" class="btn btn-outline-light btn-sm me-lg-2 mb-2 mb-lg-0" (click)="logout()">
+            <i class="fas fa-sign-out-alt me-1"></i>Déconnexion
+          </button>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [href]="swaggerDocsUrl" target="_blank" rel="noopener noreferrer">
             <i class="fas fa-book"></i>
             <span>API Docs</span>
           </a>

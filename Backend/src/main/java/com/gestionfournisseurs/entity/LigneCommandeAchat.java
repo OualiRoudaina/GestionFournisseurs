@@ -1,6 +1,6 @@
 package com.gestionfournisseurs.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -16,7 +16,7 @@ public class LigneCommandeAchat {
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "commande_id", nullable = false)
-    @JsonIgnore
+    @JsonIgnoreProperties(value = {"lignesCommande", "fournisseur", "hibernateLazyInitializer", "handler"})
     private CommandeAchat commande;
     
     @NotBlank(message = "Le nom du produit est obligatoire")
@@ -83,6 +83,9 @@ public class LigneCommandeAchat {
     }
     
     public Double getTotal() {
+        if (quantite == null || prixUnitaire == null) {
+            return null;
+        }
         return quantite * prixUnitaire;
     }
 }

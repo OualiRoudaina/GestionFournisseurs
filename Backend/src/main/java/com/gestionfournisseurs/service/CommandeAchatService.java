@@ -3,6 +3,7 @@ package com.gestionfournisseurs.service;
 import com.gestionfournisseurs.entity.CommandeAchat;
 import com.gestionfournisseurs.entity.Fournisseur;
 import com.gestionfournisseurs.repository.CommandeAchatRepository;
+import com.gestionfournisseurs.repository.FournisseurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,25 +19,39 @@ public class CommandeAchatService {
     @Autowired
     private CommandeAchatRepository commandeAchatRepository;
 
+    @Autowired
+    private FournisseurRepository fournisseurRepository;
+
+    private Fournisseur resolveFournisseur(Fournisseur ref) {
+        if (ref == null || ref.getId() == null) {
+            return null;
+        }
+        return fournisseurRepository.findById(ref.getId())
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Fournisseur introuvable avec l'id " + ref.getId()));
+    }
+
     public List<CommandeAchat> getAllCommandes() {
-        return commandeAchatRepository.findAll();
+        return commandeAchatRepository.findAllWithFournisseur();
     }
 
     public Optional<CommandeAchat> getCommandeById(Long id) {
-        return commandeAchatRepository.findById(id);
+        return commandeAchatRepository.findByIdWithFournisseur(id);
     }
 
     public CommandeAchat saveCommande(CommandeAchat commande) {
         if (commande.getDate() == null) {
             commande.setDate(LocalDate.now());
         }
-        return commandeAchatRepository.save(commande);
+        commande.setFournisseur(resolveFournisseur(commande.getFournisseur()));
+        CommandeAchat saved = commandeAchatRepository.save(commande);
+        return commandeAchatRepository.findByIdWithFournisseur(saved.getId()).orElse(saved);
     }
 
     public CommandeAchat updateCommande(Long id, CommandeAchat commandeDetails) {
-        return commandeAchatRepository.findById(id)
+        return commandeAchatRepository.findByIdWithFournisseur(id)
             .map(commande -> {
-                commande.setFournisseur(commandeDetails.getFournisseur());
+                commande.setFournisseur(resolveFournisseur(commandeDetails.getFournisseur()));
                 commande.setDate(commandeDetails.getDate());
                 commande.setStatut(commandeDetails.getStatut());
                 commande.setMontant(commandeDetails.getMontant());
@@ -70,7 +85,7 @@ public class CommandeAchatService {
     }
 
     public CommandeAchat updateStatut(Long id, String nouveauStatut) {
-        return commandeAchatRepository.findById(id)
+        return commandeAchatRepository.findByIdWithFournisseur(id)
             .map(commande -> {
                 commande.setStatut(nouveauStatut);
                 return commandeAchatRepository.save(commande);

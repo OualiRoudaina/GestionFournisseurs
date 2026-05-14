@@ -2,6 +2,7 @@ package com.gestionfournisseurs.service;
 
 import com.gestionfournisseurs.entity.LigneCommandeAchat;
 import com.gestionfournisseurs.entity.CommandeAchat;
+import com.gestionfournisseurs.repository.CommandeAchatRepository;
 import com.gestionfournisseurs.repository.LigneCommandeAchatRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,9 @@ public class LigneCommandeAchatService {
     @Autowired
     private LigneCommandeAchatRepository ligneCommandeAchatRepository;
 
+    @Autowired
+    private CommandeAchatRepository commandeAchatRepository;
+
     public List<LigneCommandeAchat> getAllLignesCommande() {
         return ligneCommandeAchatRepository.findAll();
     }
@@ -26,19 +30,30 @@ public class LigneCommandeAchatService {
     }
 
     public LigneCommandeAchat saveLigneCommande(LigneCommandeAchat ligneCommande) {
+        ligneCommande.setCommande(requireManagedCommande(ligneCommande.getCommande()));
         return ligneCommandeAchatRepository.save(ligneCommande);
     }
 
     public LigneCommandeAchat updateLigneCommande(Long id, LigneCommandeAchat ligneCommandeDetails) {
         return ligneCommandeAchatRepository.findById(id)
             .map(ligneCommande -> {
-                ligneCommande.setCommande(ligneCommandeDetails.getCommande());
+                if (ligneCommandeDetails.getCommande() != null && ligneCommandeDetails.getCommande().getId() != null) {
+                    ligneCommande.setCommande(requireManagedCommande(ligneCommandeDetails.getCommande()));
+                }
                 ligneCommande.setProduit(ligneCommandeDetails.getProduit());
                 ligneCommande.setQuantite(ligneCommandeDetails.getQuantite());
                 ligneCommande.setPrixUnitaire(ligneCommandeDetails.getPrixUnitaire());
                 return ligneCommandeAchatRepository.save(ligneCommande);
             })
             .orElse(null);
+    }
+
+    private CommandeAchat requireManagedCommande(CommandeAchat ref) {
+        if (ref == null || ref.getId() == null) {
+            throw new IllegalArgumentException("L'identifiant de la commande est obligatoire");
+        }
+        return commandeAchatRepository.findById(ref.getId())
+            .orElseThrow(() -> new IllegalArgumentException("Commande introuvable"));
     }
 
     public void deleteLigneCommande(Long id) {

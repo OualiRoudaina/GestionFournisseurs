@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -15,6 +15,8 @@ import { HistoriqueListComponent } from './historique/historique-list/historique
 import { HistoriqueFormComponent } from './historique/historique-form/historique-form.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ComparaisonOffresComponent } from './comparaison-offres/comparaison-offres.component';
+import { LoginComponent } from './login/login.component';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -29,7 +31,8 @@ import { ComparaisonOffresComponent } from './comparaison-offres/comparaison-off
     HistoriqueListComponent,
     HistoriqueFormComponent,
     DashboardComponent,
-    ComparaisonOffresComponent
+    ComparaisonOffresComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -38,7 +41,9 @@ import { ComparaisonOffresComponent } from './comparaison-offres/comparaison-off
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

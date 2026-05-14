@@ -1,9 +1,9 @@
 <div class="app-container">
-  <app-navbar></app-navbar>
-  
-  <div class="container-fluid">
-    <div class="row">
-      <main class="col-12 main-content">
+  <app-navbar *ngIf="showNavbar"></app-navbar>
+
+  <div class="container-fluid" [class.p-0]="!showNavbar">
+    <div class="row g-0">
+      <main class="col-12 main-content" [class.p-0]="!showNavbar">
         <router-outlet></router-outlet>
       </main>
     </div>

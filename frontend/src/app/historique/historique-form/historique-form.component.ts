@@ -100,7 +100,7 @@ export class HistoriqueFormComponent implements OnInit {
       // Préparer les données pour l'API
       const historiqueData: any = {
         fournisseur: {
-          id: formValue.fournisseurId
+          id: Number(formValue.fournisseurId)
         },
         produit: formValue.produit,
         quantite: parseInt(formValue.quantite),
@@ -130,9 +130,17 @@ export class HistoriqueFormComponent implements OnInit {
             : 'Erreur lors de l\'ajout de l\'achat';
           this.loading = false;
           console.error('Erreur:', error);
-          
-          if (error.error && error.error.message) {
-            this.errorMessage += ': ' + error.error.message;
+
+          const body = error?.error;
+          if (typeof body === 'string') {
+            this.errorMessage += ': ' + body;
+          } else if (body?.error) {
+            this.errorMessage += ': ' + body.error;
+          } else if (body?.message) {
+            this.errorMessage += ': ' + body.message;
+          } else if (body?.violations?.length) {
+            const msgs = body.violations.map((v: { message?: string }) => v.message).filter(Boolean).join(' ');
+            if (msgs) this.errorMessage += ': ' + msgs;
           }
         }
       });

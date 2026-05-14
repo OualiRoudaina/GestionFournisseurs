@@ -18,16 +18,17 @@
 }
 
 .card {
-  border: none;
-  border-radius: 1rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  box-shadow: var(--shadow-sm);
   overflow: hidden;
 }
 
 .card-header {
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-  color: white;
+  background: var(--nav-bg);
+  color: #f8fafc;
   border: none;
+  border-bottom: 3px solid var(--accent);
   padding: 1.5rem;
   border-radius: 0 !important;
 }
@@ -64,20 +65,19 @@
 
 .table-row-hover:hover {
   background: #f8fafc;
-  transform: scale(1.01);
 }
 
 .avatar-circle {
   width: 45px;
   height: 45px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  background: var(--accent);
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
   font-size: 1.25rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-sm);
 }
 
 .badge-lg {

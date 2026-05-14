@@ -23,12 +23,24 @@
                       id="produitSelect"
                       [(ngModel)]="selectedProduit"
                       (change)="onProduitChanged()"
-                      [disabled]="isLoading || produits.length === 0">
+                      [disabled]="isLoading || produits.length === 0"
+                      *ngIf="produits.length > 0; else manualProduitInput">
                 <option value="">-- Choisir un produit --</option>
                 <option *ngFor="let produit of produits" [value]="produit">
                   {{ produit }}
                 </option>
               </select>
+              <ng-template #manualProduitInput>
+                <input class="form-control"
+                       id="produitSelect"
+                       type="text"
+                       [(ngModel)]="selectedProduit"
+                       placeholder="Saisir un produit à comparer"
+                       [disabled]="isLoading">
+                <small class="text-muted">
+                  Aucun produit récupéré. Les produits viennent des lignes de commande et de l'historique d'achats.
+                </small>
+              </ng-template>
             </div>
             <div class="col-md-4">
               <button class="btn btn-primary w-100" 

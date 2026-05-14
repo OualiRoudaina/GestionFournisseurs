@@ -29,7 +29,4 @@ bin/
 .DS_Store
 Thumbs.db
 
-# Maven
-.mvn/
-mvnw
-mvnw.cmd
+# Maven (le wrapper mvnw / .mvn est versionné — ne pas ignorer)

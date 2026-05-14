@@ -23,4 +23,7 @@ public interface LigneCommandeAchatRepository extends JpaRepository<LigneCommand
     
     @Query("SELECT l FROM LigneCommandeAchat l WHERE l.produit = :produit ORDER BY l.prixUnitaire ASC")
     List<LigneCommandeAchat> findBestPricesForProduct(@Param("produit") String produit);
+
+    @Query("SELECT DISTINCT l FROM LigneCommandeAchat l JOIN FETCH l.commande c JOIN FETCH c.fournisseur WHERE c.date BETWEEN :from AND :to")
+    List<LigneCommandeAchat> findAllWithCommandeForPeriod(@Param("from") java.time.LocalDate from, @Param("to") java.time.LocalDate to);
 }

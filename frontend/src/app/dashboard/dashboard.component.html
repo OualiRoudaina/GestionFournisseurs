@@ -1,81 +1,152 @@
-<div class="dashboard-container fade-in">
+<div *ngIf="!loading && errorMessage && !summary" class="dashboard-container fade-in px-2">
+  <div class="alert alert-danger">{{ errorMessage }}</div>
+  <button type="button" class="btn btn-outline-primary" (click)="loadSummary()">
+    <i class="fas fa-sync-alt me-1"></i>Réessayer
+  </button>
+</div>
+
+<div class="dashboard-container fade-in" *ngIf="!loading && summary as s">
   <div class="page-header">
-    <div class="d-flex align-items-center justify-content-between">
+    <div class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-lg-between gap-3">
       <div>
         <h1 class="text-gradient">
-          <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+          <i class="fas fa-tachometer-alt me-2"></i>Tableau de bord
         </h1>
-        <p class="text-muted mb-0">Vue d'ensemble de votre système de gestion des achats</p>
+        <p class="text-muted mb-0">
+          Vue d'ensemble et analyses sur la période du <strong>{{ formatDate(s.periodeDebut) }}</strong> au
+          <strong>{{ formatDate(s.periodeFin) }}</strong>
+        </p>
       </div>
-      <div class="header-actions">
-        <button class="btn btn-primary" routerLink="/commandes/new">
-          <i class="fas fa-plus"></i>
-          <span>Nouvelle Commande</span>
+      <div class="d-flex flex-wrap align-items-end gap-2 periode-controls">
+        <div>
+          <label class="form-label small text-muted mb-1">Du</label>
+          <input type="date" class="form-control form-control-sm" [(ngModel)]="dateFrom" (change)="onPeriodeChange()" />
+        </div>
+        <div>
+          <label class="form-label small text-muted mb-1">Au</label>
+          <input type="date" class="form-control form-control-sm" [(ngModel)]="dateTo" (change)="onPeriodeChange()" />
+        </div>
+        <button type="button" class="btn btn-outline-secondary btn-sm" (click)="loadSummary()">
+          <i class="fas fa-sync-alt me-1"></i>Actualiser
+        </button>
+        <button class="btn btn-primary btn-sm" routerLink="/commandes/new">
+          <i class="fas fa-plus me-1"></i>Nouvelle commande
         </button>
       </div>
     </div>
   </div>
 
-  <!-- Statistiques principales -->
+  <!-- KPI -->
   <div class="row g-4 mb-4">
     <div class="col-xl-3 col-md-6">
       <div class="card stats-card stats-card-primary h-100">
         <div class="card-body">
           <div class="d-flex justify-content-between align-items-start">
-            <div class="flex-grow-1">
-              <div class="stats-label">Total Fournisseurs</div>
-              <div class="stats-number">{{ stats.totalFournisseurs }}</div>
+            <div>
+              <div class="stats-label">Fournisseurs</div>
+              <div class="stats-number">{{ s.totalFournisseurs }}</div>
+              <div class="stats-hint">Total en base</div>
             </div>
-            <div class="stats-icon">
-              <i class="fas fa-building"></i>
-            </div>
+            <div class="stats-icon"><i class="fas fa-building"></i></div>
           </div>
         </div>
       </div>
     </div>
-
     <div class="col-xl-3 col-md-6">
       <div class="card stats-card stats-card-success h-100">
         <div class="card-body">
           <div class="d-flex justify-content-between align-items-start">
-            <div class="flex-grow-1">
-              <div class="stats-label">Total Commandes</div>
-              <div class="stats-number">{{ stats.totalCommandes }}</div>
+            <div>
+              <div class="stats-label">Commandes (période)</div>
+              <div class="stats-number">{{ s.totalCommandesPeriode }}</div>
+              <div class="stats-hint">Tous statuts (y compris annulées)</div>
             </div>
-            <div class="stats-icon">
-              <i class="fas fa-shopping-bag"></i>
-            </div>
+            <div class="stats-icon"><i class="fas fa-shopping-bag"></i></div>
           </div>
         </div>
       </div>
     </div>
-
     <div class="col-xl-3 col-md-6">
       <div class="card stats-card stats-card-info h-100">
         <div class="card-body">
           <div class="d-flex justify-content-between align-items-start">
-            <div class="flex-grow-1">
-              <div class="stats-label">Montant Total</div>
-              <div class="stats-number">{{ formatMontant(stats.montantTotal) }}</div>
+            <div>
+              <div class="stats-label">Montant commandes</div>
+              <div class="stats-number stats-number-sm">{{ formatMontant(s.montantTotalPeriode) }}</div>
+              <div class="stats-hint">Annulées exclues du total</div>
             </div>
-            <div class="stats-icon">
-              <i class="fas fa-euro-sign"></i>
+            <div class="stats-icon"><i class="fas fa-euro-sign"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+      <div class="card stats-card stats-card-warning h-100">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start">
+            <div>
+              <div class="stats-label">Historique achats</div>
+              <div class="stats-number">{{ s.totalAchatsHistoriquePeriode }}</div>
+              <div class="stats-hint">Délai moyen : {{ s.moyenneDelaiLivraison }} j</div>
+            </div>
+            <div class="stats-icon"><i class="fas fa-clock"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- Montants par mois -->
+    <div class="col-lg-7 mb-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-header py-3 d-flex justify-content-between align-items-center flex-wrap gap-2">
+          <h6 class="m-0 font-weight-bold text-primary">
+            <i class="fas fa-chart-bar me-2"></i>Montants des commandes par mois
+          </h6>
+          <span class="badge bg-light text-dark">CA hors commandes annulées</span>
+        </div>
+        <div class="card-body">
+          <div *ngIf="!s.montantsParMois?.length" class="text-muted py-4 text-center">
+            Aucune commande sur cette période.
+          </div>
+          <div class="month-bars" *ngIf="s.montantsParMois?.length">
+            <div class="month-bar-row" *ngFor="let m of s.montantsParMois">
+              <div class="month-bar-label">{{ formatMoisCourts(m.mois) }}</div>
+              <div class="month-bar-track">
+                <div class="month-bar-fill" [style.width.%]="barPercent(m.montantTotal)"></div>
+              </div>
+              <div class="month-bar-meta">
+                <span class="fw-semibold">{{ formatMontant(m.montantTotal) }}</span>
+                <span class="text-muted small ms-1">({{ m.nombreCommandes }} cmd.)</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="col-xl-3 col-md-6">
-      <div class="card stats-card stats-card-warning h-100">
+    <!-- Statuts -->
+    <div class="col-lg-5 mb-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">
+            <i class="fas fa-chart-pie me-2"></i>Statuts des commandes (période)
+          </h6>
+        </div>
         <div class="card-body">
-          <div class="d-flex justify-content-between align-items-start">
-            <div class="flex-grow-1">
-              <div class="stats-label">Délai Moyen</div>
-              <div class="stats-number">{{ stats.moyenneDelaiLivraison }}j</div>
+          <div class="d-flex justify-content-around align-items-center flex-wrap gap-3 status-blocks">
+            <div class="text-center">
+              <div class="h3 text-success mb-0">{{ s.commandesLivree }}</div>
+              <small class="text-muted">Livrées</small>
             </div>
-            <div class="stats-icon">
-              <i class="fas fa-clock"></i>
+            <div class="text-center">
+              <div class="h3 text-warning mb-0">{{ s.commandesEnAttente }}</div>
+              <small class="text-muted">En attente</small>
+            </div>
+            <div class="text-center">
+              <div class="h3 text-primary mb-0">{{ s.commandesAutres }}</div>
+              <small class="text-muted">Autres</small>
             </div>
           </div>
         </div>
@@ -84,59 +155,97 @@
   </div>
 
   <div class="row">
-    <!-- Graphiques des statuts -->
+    <!-- Top fournisseurs par CA -->
     <div class="col-lg-6 mb-4">
-      <div class="card shadow">
+      <div class="card shadow-sm h-100">
         <div class="card-header py-3">
           <h6 class="m-0 font-weight-bold text-primary">
-            <i class="fas fa-chart-pie me-2"></i>Statuts des Commandes
+            <i class="fas fa-trophy me-2"></i>Top fournisseurs (chiffre d'affaires)
           </h6>
         </div>
-        <div class="card-body">
-          <div class="chart-container">
-            <div class="d-flex justify-content-around align-items-center" style="height: 200px;">
-              <div class="text-center">
-                <div class="h4 text-success">{{ stats.commandesLivre }}</div>
-                <small class="text-muted">Livrées</small>
-              </div>
-              <div class="text-center">
-                <div class="h4 text-warning">{{ stats.commandesEnAttente }}</div>
-                <small class="text-muted">En attente</small>
-              </div>
-              <div class="text-center">
-                <div class="h4 text-primary">{{ stats.totalCommandes - stats.commandesLivre - stats.commandesEnAttente }}</div>
-                <small class="text-muted">Confirmées</small>
-              </div>
-            </div>
+        <div class="card-body p-0">
+          <div *ngIf="!s.topFournisseurs?.length" class="text-muted py-4 px-3 text-center">
+            Aucune commande (non annulée) sur la période.
+          </div>
+          <div class="table-responsive" *ngIf="s.topFournisseurs?.length">
+            <table class="table table-hover mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th>#</th>
+                  <th>Fournisseur</th>
+                  <th class="text-end">Commandes</th>
+                  <th class="text-end">Montant</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let f of s.topFournisseurs; let i = index">
+                  <td>
+                    <span class="rank-badge" [class.rank-1]="i === 0" [class.rank-2]="i === 1" [class.rank-3]="i === 2">{{ i + 1 }}</span>
+                  </td>
+                  <td class="fw-semibold">{{ f.nom }}</td>
+                  <td class="text-end">{{ f.nombreCommandes }}</td>
+                  <td class="text-end text-success fw-semibold">{{ formatMontant(f.montantTotal) }}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Meilleurs fournisseurs -->
+    <!-- Évolution des prix -->
     <div class="col-lg-6 mb-4">
-      <div class="card shadow">
+      <div class="card shadow-sm h-100">
         <div class="card-header py-3">
           <h6 class="m-0 font-weight-bold text-primary">
-            <i class="fas fa-star me-2"></i>Top Fournisseurs
+            <i class="fas fa-chart-line me-2"></i>Évolution des prix unitaires (lignes de commande)
           </h6>
         </div>
         <div class="card-body">
-          <div class="table-responsive">
-            <table class="table table-borderless">
-              <tbody>
-                <tr *ngFor="let fournisseur of topFournisseurs; let i = index">
-                  <td>
-                    <span class="badge bg-primary me-2">#{{ i + 1 }}</span>
-                    {{ fournisseur.nom }}
-                  </td>
-                  <td class="text-end">
-                    <span class="badge bg-success">{{ fournisseur.note }}/10</span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+          <div *ngIf="!s.evolutionPrixParProduit?.length" class="text-muted py-3 text-center">
+            Aucune ligne de commande sur la période pour analyser les prix.
           </div>
+          <ng-container *ngIf="s.evolutionPrixParProduit?.length">
+            <label class="form-label small text-muted">Produit</label>
+            <select class="form-select form-select-sm mb-3" [(ngModel)]="selectedProduit">
+              <option *ngFor="let e of s.evolutionPrixParProduit" [ngValue]="e.produit">{{ e.produit }}</option>
+            </select>
+
+            <ng-container *ngIf="evolutionSelection as ev">
+              <div class="d-flex justify-content-between small text-muted mb-2" *ngIf="ev.points.length">
+                <span>Min : {{ formatMontant(minMaxPrix(ev.points).min) }}</span>
+                <span>Max : {{ formatMontant(minMaxPrix(ev.points).max) }}</span>
+              </div>
+              <div class="spark-wrap" *ngIf="ev.points.length >= 2">
+                <svg class="spark-svg" viewBox="0 0 100 50" preserveAspectRatio="none">
+                  <polyline
+                    [attr.points]="sparklinePoints(ev.points)"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.25"
+                    vector-effect="non-scaling-stroke" />
+                </svg>
+              </div>
+              <div class="table-responsive mt-2" style="max-height: 220px; overflow-y: auto">
+                <table class="table table-sm mb-0">
+                  <thead class="table-light sticky-top">
+                    <tr>
+                      <th>Date</th>
+                      <th>Fournisseur</th>
+                      <th class="text-end">Prix unit.</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let p of ev.points">
+                      <td>{{ formatDate(p.date) }}</td>
+                      <td>{{ p.fournisseurNom }}</td>
+                      <td class="text-end fw-semibold">{{ formatMontant(p.prixUnitaire) }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </ng-container>
+          </ng-container>
         </div>
       </div>
     </div>
@@ -145,41 +254,37 @@
   <!-- Dernières commandes -->
   <div class="row">
     <div class="col-12 mb-4">
-      <div class="card shadow">
+      <div class="card shadow-sm">
         <div class="card-header py-3">
           <h6 class="m-0 font-weight-bold text-primary">
-            <i class="fas fa-clock me-2"></i>Dernières Commandes
+            <i class="fas fa-clock me-2"></i>Dernières commandes (période)
           </h6>
         </div>
-        <div class="card-body">
-          <div class="table-responsive">
-            <table class="table table-hover">
+        <div class="card-body p-0">
+          <div *ngIf="!s.recentCommandes?.length" class="text-muted py-4 text-center">Aucune commande datée sur la période.</div>
+          <div class="table-responsive" *ngIf="s.recentCommandes?.length">
+            <table class="table table-hover mb-0">
               <thead class="table-light">
                 <tr>
                   <th>Fournisseur</th>
                   <th>Date</th>
                   <th>Statut</th>
                   <th>Montant</th>
-                  <th>Actions</th>
+                  <th class="text-end">Actions</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let commande of recentCommandes">
-                  <td>{{ commande.fournisseur?.nom || 'N/A' }}</td>
+                <tr *ngFor="let commande of s.recentCommandes">
+                  <td>{{ commande.fournisseurNom }}</td>
                   <td>{{ formatDate(commande.date) }}</td>
                   <td>
-                    <span [class]="getStatusBadgeClass(commande.statut)">
-                      {{ commande.statut }}
-                    </span>
+                    <span [class]="getStatusBadgeClass(commande.statut)">{{ commande.statut }}</span>
                   </td>
-                  <td>{{ formatMontant(commande.montant || 0) }}</td>
-                  <td>
-                    <button class="btn btn-sm btn-outline-primary me-1">
-                      <i class="fas fa-eye"></i>
-                    </button>
-                    <button class="btn btn-sm btn-outline-secondary">
+                  <td>{{ formatMontant(commande.montant) }}</td>
+                  <td class="text-end">
+                    <a class="btn btn-sm btn-outline-primary" [routerLink]="['/commandes/edit', commande.id]">
                       <i class="fas fa-edit"></i>
-                    </button>
+                    </a>
                   </td>
                 </tr>
               </tbody>
@@ -193,41 +298,42 @@
   <!-- Actions rapides -->
   <div class="row">
     <div class="col-12">
-      <div class="card shadow">
+      <div class="card shadow-sm">
         <div class="card-header py-3">
           <h6 class="m-0 font-weight-bold text-primary">
-            <i class="fas fa-bolt me-2"></i>Actions Rapides
+            <i class="fas fa-bolt me-2"></i>Actions rapides
           </h6>
         </div>
         <div class="card-body">
-          <div class="row">
-            <div class="col-md-3 mb-3">
-              <button class="btn btn-primary w-100" routerLink="/fournisseurs/new">
-                <i class="fas fa-plus me-2"></i>
-                Nouveau Fournisseur
-              </button>
+          <div class="row g-3">
+            <div class="col-md-3">
+              <a class="btn btn-primary w-100" routerLink="/fournisseurs/new">
+                <i class="fas fa-plus me-2"></i>Nouveau fournisseur
+              </a>
             </div>
-            <div class="col-md-3 mb-3">
-              <button class="btn btn-success w-100" routerLink="/commandes/new">
-                <i class="fas fa-shopping-cart me-2"></i>
-                Nouvelle Commande
-              </button>
+            <div class="col-md-3">
+              <a class="btn btn-success w-100" routerLink="/commandes/new">
+                <i class="fas fa-shopping-cart me-2"></i>Nouvelle commande
+              </a>
             </div>
-            <div class="col-md-3 mb-3">
-              <button class="btn btn-info w-100" routerLink="/comparaison-offres">
-                <i class="fas fa-balance-scale me-2"></i>
-                Comparer Offres
-              </button>
+            <div class="col-md-3">
+              <a class="btn btn-info w-100" routerLink="/comparaison-offres">
+                <i class="fas fa-balance-scale me-2"></i>Comparer les offres
+              </a>
             </div>
-            <div class="col-md-3 mb-3">
-              <button class="btn btn-warning w-100" routerLink="/historique">
-                <i class="fas fa-history me-2"></i>
-                Voir Historique
-              </button>
+            <div class="col-md-3">
+              <a class="btn btn-warning w-100" routerLink="/historique">
+                <i class="fas fa-history me-2"></i>Historique
+              </a>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+</div>
+
+<div *ngIf="loading" class="text-center py-5 dashboard-loading">
+  <div class="spinner-border text-primary" role="status"></div>
+  <p class="mt-3 text-muted">Chargement du tableau de bord…</p>
 </div>

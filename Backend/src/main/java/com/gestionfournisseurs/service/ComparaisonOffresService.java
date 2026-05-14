@@ -187,6 +187,9 @@ public class ComparaisonOffresService {
      * @return Liste des noms de produits distincts
      */
     public List<String> getProduitsDisponibles() {
-        return ligneCommandeAchatRepository.findAllProducts();
+        Set<String> produits = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+        produits.addAll(ligneCommandeAchatRepository.findAllProducts());
+        produits.addAll(historiqueAchatsRepository.findAllProducts());
+        return new ArrayList<>(produits);
     }
 }

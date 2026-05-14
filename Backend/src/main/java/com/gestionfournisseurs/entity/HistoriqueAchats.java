@@ -1,6 +1,6 @@
 package com.gestionfournisseurs.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -17,7 +17,8 @@ public class HistoriqueAchats {
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fournisseur_id", nullable = false)
-    @JsonIgnore
+    @NotNull(message = "Le fournisseur est obligatoire")
+    @JsonIgnoreProperties({"commandes", "historiqueAchats", "hibernateLazyInitializer", "handler"})
     private Fournisseur fournisseur;
     
     @NotBlank(message = "Le nom du produit est obligatoire")

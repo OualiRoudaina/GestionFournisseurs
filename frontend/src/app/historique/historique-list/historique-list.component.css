@@ -1,15 +1,11 @@
-/* ============================================
-   Modern Historique List Styles
-   ============================================ */
-
 .fade-in {
-  animation: fadeIn 0.5s ease-out;
+  animation: fadeIn 0.45s ease-out;
 }
 
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
@@ -17,100 +13,110 @@
   }
 }
 
-/* ============================================
-   Stats Cards
-   ============================================ */
-
+/* Cartes stats — même esprit que le dashboard */
 .stats-card {
-  border: none;
-  border-radius: 1rem;
-  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
   position: relative;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  cursor: pointer;
+  overflow: hidden;
+}
+
+.stats-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  border-radius: 14px 0 0 14px;
 }
 
 .stats-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-border-strong);
 }
 
-.stats-card-primary {
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+.stats-card-primary::before {
+  background: linear-gradient(180deg, #14b8a6, #0f766e);
 }
 
-.stats-card-info {
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+.stats-card-info::before {
+  background: linear-gradient(180deg, #38bdf8, #0369a1);
 }
 
-.stats-card-success {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+.stats-card-success::before {
+  background: linear-gradient(180deg, #34d399, #047857);
 }
 
 .stats-card .card-body {
-  padding: 2rem;
-  position: relative;
-  z-index: 1;
+  padding: 1.35rem 1.25rem 1.35rem 1.5rem;
 }
 
 .stats-label {
-  font-size: 0.875rem;
-  font-weight: 500;
+  font-size: 0.7rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: rgba(255, 255, 255, 0.9);
-  margin-bottom: 0.75rem;
+  letter-spacing: 0.08em;
+  color: var(--color-muted);
+  margin-bottom: 0.5rem;
 }
 
 .stats-number {
-  font-size: 2.75rem;
+  font-size: 1.85rem;
   font-weight: 700;
-  line-height: 1;
-  color: white;
+  line-height: 1.1;
+  color: var(--color-ink);
   margin: 0;
+  letter-spacing: -0.03em;
 }
 
 .stats-icon {
-  width: 60px;
-  height: 60px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 1rem;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.75rem;
-  color: white;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
+  font-size: 1.2rem;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border: 1px solid rgba(15, 118, 110, 0.12);
 }
 
-.stats-card:hover .stats-icon {
-  transform: scale(1.1) rotate(5deg);
-  background: rgba(255, 255, 255, 0.3);
+.stats-card-info .stats-icon {
+  color: var(--info);
+  background: #e0f2fe;
+  border-color: rgba(3, 105, 161, 0.12);
 }
 
-/* ============================================
-   Cards
-   ============================================ */
+.stats-card-success .stats-icon {
+  color: var(--success);
+  background: #d1fae5;
+  border-color: rgba(4, 120, 87, 0.15);
+}
 
 .card {
-  border: none;
-  border-radius: 1rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  box-shadow: var(--shadow-sm);
   overflow: hidden;
   margin-bottom: 1.5rem;
 }
 
 .card-header {
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-  color: white;
+  background: var(--nav-bg);
+  color: #f8fafc;
   border: none;
+  border-bottom: 3px solid var(--accent);
   padding: 1.5rem;
   border-radius: 0 !important;
 }
 
 .card-header h5 {
-  color: white;
+  color: #f8fafc;
   font-weight: 600;
 }
 
@@ -118,36 +124,28 @@
   padding: 1.75rem;
 }
 
-/* ============================================
-   Forms
-   ============================================ */
-
 .form-label {
   font-weight: 600;
-  color: #1e293b;
+  color: var(--color-ink);
   margin-bottom: 0.5rem;
   font-size: 0.875rem;
 }
 
 .form-control,
 .form-select {
-  border-radius: 0.75rem;
-  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  border: 1px solid var(--color-border);
   padding: 0.75rem 1rem;
   font-size: 1rem;
-  transition: all 0.3s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .form-control:focus,
 .form-select:focus {
-  border-color: #6366f1;
-  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-ring);
   outline: none;
 }
-
-/* ============================================
-   Tables
-   ============================================ */
 
 .table {
   margin-bottom: 0;
@@ -157,7 +155,7 @@
   background: #f8fafc;
   border: none;
   font-weight: 600;
-  color: #1e293b;
+  color: var(--color-ink);
   text-transform: uppercase;
   font-size: 0.75rem;
   letter-spacing: 0.05em;
@@ -166,153 +164,138 @@
 
 .table tbody td {
   padding: 1.25rem 1rem;
-  border-top: 1px solid #e2e8f0;
+  border-top: 1px solid var(--color-border);
   vertical-align: middle;
 }
 
 .table-row-hover {
-  transition: all 0.2s ease;
+  transition: background-color 0.2s ease;
 }
 
 .table-row-hover:hover {
   background: #f8fafc;
-  transform: scale(1.01);
 }
-
-/* ============================================
-   Avatar Circle
-   ============================================ */
 
 .avatar-circle {
   width: 45px;
   height: 45px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  background: var(--accent);
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
   font-size: 1.25rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-sm);
 }
 
-/* ============================================
-   Badges
-   ============================================ */
-
 .badge {
-  padding: 0.5rem 0.75rem;
-  border-radius: 0.5rem;
-  font-weight: 500;
-  font-size: 0.75rem;
+  padding: 0.35rem 0.55rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .badge.bg-success {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+  background: #d1fae5 !important;
+  color: #065f46 !important;
 }
 
 .badge.bg-warning {
-  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
+  background: #fef3c7 !important;
+  color: #92400e !important;
 }
 
 .badge.bg-danger {
-  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+  background: #fee2e2 !important;
+  color: #991b1b !important;
 }
 
 .badge.bg-info {
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
+  background: #e0f2fe !important;
+  color: #075985 !important;
 }
 
-/* ============================================
-   Buttons
-   ============================================ */
-
 .btn {
-  border-radius: 0.75rem;
-  padding: 0.875rem 1.5rem;
+  border-radius: 10px;
+  padding: 0.75rem 1.5rem;
   font-weight: 600;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
   border: none;
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-xs);
 }
 
 .btn:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-sm);
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  background: var(--accent);
   color: white;
 }
 
 .btn-outline-secondary {
-  border: 2px solid #64748b;
-  color: #64748b;
+  border: 1px solid #94a3b8;
+  color: #475569;
   background: transparent;
 }
 
 .btn-outline-secondary:hover {
-  background: #64748b;
-  color: white;
+  background: #f1f5f9;
+  color: var(--color-ink);
+  border-color: #64748b;
 }
 
 .btn-sm {
-  padding: 0.5rem 0.75rem;
-  border-radius: 0.5rem;
+  padding: 0.45rem 0.65rem;
+  border-radius: 8px;
 }
 
 .btn-outline-primary {
-  border: 2px solid #6366f1;
-  color: #6366f1;
+  border: 1px solid var(--accent);
+  color: var(--accent);
   background: transparent;
 }
 
 .btn-outline-primary:hover {
-  background: #6366f1;
-  color: white;
+  background: var(--accent-soft);
+  color: var(--accent-hover);
 }
 
 .btn-outline-danger {
-  border: 2px solid #ef4444;
-  color: #ef4444;
+  border: 1px solid #dc2626;
+  color: #b91c1c;
   background: transparent;
 }
 
 .btn-outline-danger:hover {
-  background: #ef4444;
-  color: white;
+  background: #fef2f2;
+  color: #991b1b;
 }
 
 .gap-2 {
   gap: 0.5rem !important;
 }
 
-/* ============================================
-   Alerts
-   ============================================ */
-
 .alert {
-  border-radius: 0.75rem;
-  border: none;
+  border-radius: 10px;
+  border: 1px solid var(--color-border);
   padding: 1rem 1.25rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-xs);
   border-left: 4px solid;
   margin-bottom: 1.5rem;
 }
 
 .alert-danger {
   background: #fef2f2;
-  border-left-color: #ef4444;
+  border-left-color: #dc2626;
   color: #991b1b;
 }
-
-/* ============================================
-   Empty State
-   ============================================ */
 
 .empty-state {
   padding: 4rem 2rem;
@@ -328,7 +311,8 @@
   width: 100px;
   height: 100px;
   margin: 0 auto 1.5rem;
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  background: #f8fafc;
+  border: 1px solid var(--color-border);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -340,28 +324,24 @@
 .empty-state-title {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #1e293b;
+  color: var(--color-ink);
   margin-bottom: 0.5rem;
 }
 
 .empty-state-text {
-  color: #64748b;
+  color: var(--color-muted);
   margin-bottom: 0;
 }
 
-/* ============================================
-   Responsive Design
-   ============================================ */
-
 @media (max-width: 768px) {
   .stats-number {
-    font-size: 2rem;
+    font-size: 1.5rem;
   }
 
   .stats-icon {
-    width: 50px;
-    height: 50px;
-    font-size: 1.5rem;
+    width: 42px;
+    height: 42px;
+    font-size: 1.05rem;
   }
 
   .table-responsive {
@@ -377,5 +357,15 @@
     width: 35px;
     height: 35px;
     font-size: 1rem;
+  }
+
+  .empty-state {
+    padding: 3rem 1rem;
+  }
+
+  .empty-state-icon {
+    width: 80px;
+    height: 80px;
+    font-size: 2.5rem;
   }
 }

@@ -99,7 +99,7 @@ export class CommandeFormComponent implements OnInit {
       // Préparer les données pour l'API
       const commandeData: any = {
         fournisseur: {
-          id: formValue.fournisseurId
+          id: Number(formValue.fournisseurId)
         },
         date: formValue.date,
         statut: formValue.statut,
@@ -128,9 +128,16 @@ export class CommandeFormComponent implements OnInit {
             : 'Erreur lors de la création de la commande';
           this.loading = false;
           console.error('Erreur:', error);
-          
-          if (error.error && error.error.message) {
-            this.errorMessage += ': ' + error.error.message;
+          const body = error?.error;
+          if (typeof body === 'string') {
+            this.errorMessage += ': ' + body;
+          } else if (body?.error) {
+            this.errorMessage += ': ' + body.error;
+          } else if (body?.message) {
+            this.errorMessage += ': ' + body.message;
+          } else if (body?.violations?.length) {
+            const msgs = body.violations.map((v: { message?: string }) => v.message).filter(Boolean).join(' ');
+            if (msgs) this.errorMessage += ': ' + msgs;
           }
         }
       });

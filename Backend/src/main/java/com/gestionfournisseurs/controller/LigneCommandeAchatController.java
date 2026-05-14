@@ -1,7 +1,7 @@
-package com.gestionachats.controller;
+package com.gestionfournisseurs.controller;
 
-import com.gestionachats.entity.LigneCommandeAchat;
-import com.gestionachats.service.LigneCommandeAchatService;
+import com.gestionfournisseurs.entity.LigneCommandeAchat;
+import com.gestionfournisseurs.service.LigneCommandeAchatService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;

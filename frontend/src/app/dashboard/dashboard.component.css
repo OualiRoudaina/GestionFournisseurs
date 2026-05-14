@@ -1,249 +1,162 @@
-/* ============================================
-   Modern Dashboard Styles
-   ============================================ */
-
 .dashboard-container {
-  padding: 2.5rem 0;
-  animation: fadeIn 0.5s ease-in;
+  padding: 0 0 2rem;
+  animation: fadeIn 0.4s ease-out;
 }
 
 .page-header {
-  margin-bottom: 2.5rem;
-  padding: 1.5rem 0;
+  margin-bottom: 1.75rem;
+  padding: 0.25rem 0 0;
 }
 
 .page-header h1 {
-  margin-bottom: 0.5rem;
-  font-size: 2.5rem;
+  margin-bottom: 0.35rem;
+  font-size: 1.85rem;
   font-weight: 700;
+  color: var(--color-ink);
+}
+
+.page-header .text-muted {
+  color: var(--color-muted) !important;
+  font-size: 0.95rem;
 }
 
 .header-actions {
   display: flex;
-  gap: 1rem;
+  gap: 0.65rem;
+  flex-wrap: wrap;
 }
 
-/* ============================================
-   Stats Cards - Modern Gradient Design
-   ============================================ */
-
+/* Cartes indicateurs — style éditorial */
 .stats-card {
-  border: none;
-  border-radius: 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
   overflow: hidden;
   position: relative;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  cursor: pointer;
 }
 
 .stats-card::before {
   content: '';
   position: absolute;
-  top: 0;
   left: 0;
-  right: 0;
+  top: 0;
   bottom: 0;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%);
-}
-
-.stats-card:hover::before {
-  opacity: 1;
+  width: 4px;
+  border-radius: 14px 0 0 14px;
 }
 
 .stats-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-border-strong);
 }
 
-.stats-card-primary {
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+.stats-card-primary::before {
+  background: linear-gradient(180deg, #14b8a6, #0f766e);
 }
 
-.stats-card-success {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+.stats-card-success::before {
+  background: linear-gradient(180deg, #34d399, #047857);
 }
 
-.stats-card-info {
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+.stats-card-info::before {
+  background: linear-gradient(180deg, #38bdf8, #0369a1);
 }
 
-.stats-card-warning {
-  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+.stats-card-warning::before {
+  background: linear-gradient(180deg, #fbbf24, #b45309);
 }
 
 .stats-card .card-body {
-  padding: 2rem;
-  position: relative;
-  z-index: 1;
+  padding: 1.35rem 1.25rem 1.35rem 1.5rem;
 }
 
 .stats-label {
-  font-size: 0.875rem;
-  font-weight: 500;
+  font-size: 0.7rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: rgba(255, 255, 255, 0.9);
-  margin-bottom: 0.75rem;
+  letter-spacing: 0.08em;
+  color: var(--color-muted);
+  margin-bottom: 0.5rem;
 }
 
 .stats-number {
-  font-size: 2.75rem;
+  font-size: 1.85rem;
   font-weight: 700;
-  line-height: 1;
-  color: white;
+  line-height: 1.1;
+  color: var(--color-ink);
   margin: 0;
+  letter-spacing: -0.03em;
 }
 
 .stats-icon {
-  width: 60px;
-  height: 60px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 1rem;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.75rem;
-  color: white;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
+  font-size: 1.2rem;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border: 1px solid rgba(15, 118, 110, 0.12);
 }
 
-.stats-card:hover .stats-icon {
-  transform: scale(1.1) rotate(5deg);
-  background: rgba(255, 255, 255, 0.3);
+.stats-card-success .stats-icon {
+  color: var(--success);
+  background: #d1fae5;
+  border-color: rgba(4, 120, 87, 0.15);
 }
 
-/* ============================================
-   Cards - Modern Design
-   ============================================ */
-
-.card {
-  border: none;
-  border-radius: 1rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  transition: all 0.3s ease;
-  overflow: hidden;
+.stats-card-info .stats-icon {
+  color: var(--info);
+  background: #e0f2fe;
+  border-color: rgba(3, 105, 161, 0.12);
 }
 
-.card:hover {
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  transform: translateY(-2px);
+.stats-card-warning .stats-icon {
+  color: var(--warning);
+  background: #fef3c7;
+  border-color: rgba(180, 83, 9, 0.15);
 }
 
-.card-header {
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-  color: white;
-  border: none;
-  padding: 1.5rem;
+.card.shadow {
+  box-shadow: var(--shadow-sm) !important;
+  border: 1px solid var(--color-border);
+}
+
+.card .card-header h6 {
+  color: var(--color-ink) !important;
   font-weight: 600;
-  font-size: 1.1rem;
-  border-radius: 1rem 1rem 0 0 !important;
+  font-size: 0.95rem;
 }
 
-.card-body {
-  padding: 1.75rem;
+.chart-container {
+  min-height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
 }
-
-/* ============================================
-   Tables - Professional Design
-   ============================================ */
 
 .table-responsive {
-  border-radius: 1rem;
+  border-radius: 10px;
+  border: 1px solid var(--color-border);
   overflow: hidden;
-}
-
-.table {
-  margin-bottom: 0;
 }
 
 .table thead th {
   background: #f8fafc;
-  border: none;
-  font-weight: 600;
-  color: #1e293b;
-  text-transform: uppercase;
-  font-size: 0.75rem;
-  letter-spacing: 0.05em;
-  padding: 1.25rem 1rem;
 }
-
-.table tbody td {
-  padding: 1.25rem 1rem;
-  border-top: 1px solid #e2e8f0;
-  vertical-align: middle;
-}
-
-.table-hover tbody tr {
-  transition: all 0.2s ease;
-}
-
-.table-hover tbody tr:hover {
-  background: #f8fafc;
-  transform: scale(1.01);
-}
-
-/* ============================================
-   Buttons - Modern Design
-   ============================================ */
-
-.btn {
-  border-radius: 0.75rem;
-  font-weight: 500;
-  padding: 0.75rem 1.5rem;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-}
-
-.btn:active {
-  transform: translateY(0);
-}
-
-/* ============================================
-   Badges - Modern Design
-   ============================================ */
-
-.badge {
-  padding: 0.5rem 0.75rem;
-  border-radius: 0.5rem;
-  font-weight: 500;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-/* ============================================
-   Chart Container
-   ============================================ */
-
-.chart-container {
-  min-height: 250px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-  border-radius: 1rem;
-}
-
-/* ============================================
-   Animations
-   ============================================ */
 
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(8px);
   }
   to {
     opacity: 1;
@@ -252,67 +165,143 @@
 }
 
 .fade-in {
-  animation: fadeIn 0.5s ease-out;
+  animation: fadeIn 0.4s ease-out;
 }
 
-/* ============================================
-   Responsive Design
-   ============================================ */
+.stats-hint {
+  font-size: 0.72rem;
+  color: var(--color-muted);
+  margin-top: 0.35rem;
+}
+
+.stats-number-sm {
+  font-size: 1.25rem;
+  line-height: 1.25;
+}
+
+.periode-controls .form-control {
+  min-width: 140px;
+}
+
+.month-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.month-bar-row {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr auto;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.month-bar-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-muted);
+  text-transform: capitalize;
+}
+
+.month-bar-track {
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.08);
+  overflow: hidden;
+}
+
+.month-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #14b8a6, #0d9488);
+  min-width: 2px;
+  transition: width 0.35s ease;
+}
+
+.month-bar-meta {
+  font-size: 0.8rem;
+  white-space: nowrap;
+  text-align: right;
+}
+
+.rank-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  background: rgba(15, 23, 42, 0.08);
+  color: var(--color-ink);
+}
+
+.rank-badge.rank-1 {
+  background: rgba(234, 179, 8, 0.25);
+  color: #92400e;
+}
+
+.rank-badge.rank-2 {
+  background: rgba(148, 163, 184, 0.35);
+  color: #334155;
+}
+
+.rank-badge.rank-3 {
+  background: rgba(180, 83, 9, 0.2);
+  color: #9a3412;
+}
+
+.spark-wrap {
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 0.5rem 0.35rem;
+  background: rgba(20, 184, 166, 0.04);
+}
+
+.spark-svg {
+  display: block;
+  width: 100%;
+  height: 140px;
+  color: #0d9488;
+}
+
+.dashboard-loading {
+  min-height: 40vh;
+}
 
 @media (max-width: 768px) {
-  .dashboard-container {
-    padding: 1.5rem 0;
-  }
-
-  .page-header {
-    margin-bottom: 1.5rem;
-  }
-
   .page-header h1 {
-    font-size: 2rem;
+    font-size: 1.5rem;
   }
 
   .header-actions {
-    flex-direction: column;
     width: 100%;
     margin-top: 1rem;
   }
 
   .header-actions .btn {
-    width: 100%;
+    flex: 1;
+    min-width: 0;
   }
 
   .stats-number {
-    font-size: 2rem;
-  }
-
-  .stats-icon {
-    width: 50px;
-    height: 50px;
     font-size: 1.5rem;
   }
 
-  .stats-card .card-body {
-    padding: 1.5rem;
+  .stats-icon {
+    width: 42px;
+    height: 42px;
+    font-size: 1.05rem;
   }
 
-  .card-body {
-    padding: 1.25rem;
+  .month-bar-row {
+    grid-template-columns: 3.5rem 1fr;
+    grid-template-rows: auto auto;
   }
 
-  .table thead th,
-  .table tbody td {
-    padding: 0.75rem 0.5rem;
-    font-size: 0.875rem;
-  }
-}
-
-@media (max-width: 576px) {
-  .stats-number {
-    font-size: 1.75rem;
-  }
-
-  .stats-label {
-    font-size: 0.75rem;
+  .month-bar-meta {
+    grid-column: 1 / -1;
+    text-align: left;
   }
 }

@@ -45,7 +45,8 @@ export class ComparaisonOffresComponent implements OnInit {
         }
       },
       error: (error) => {
-        this.errorMessage = 'Erreur lors du chargement des produits';
+        this.errorMessage = 'Erreur lors du chargement des produits. Vous pouvez saisir un produit manuellement.';
+        this.produits = [];
         this.isLoading = false;
         console.error('Error loading products:', error);
       }
