@@ -10,7 +10,7 @@ http {
     keepalive_timeout  65;
 
     server {
-        listen       80;
+        listen       ___PORT___;
         server_name  localhost;
 
         location / {
